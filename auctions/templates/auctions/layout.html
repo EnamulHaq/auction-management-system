@@ -1,0 +1,215 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!-- <link href="{% static 'auctions/styles.css' %}" rel="stylesheet"> -->
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+        <title>BidX-The Auction Management system by Django</title>
+    
+        <link rel="stylesheet" href="{% static 'auctions/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/animate.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/nice-select.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/owl.min.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/magnific-popup.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/flaticon.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/jquery-ui.min.css' %}">
+        <link rel="stylesheet" href="{% static 'auctions/css/main.css' %}">
+    
+        <link rel="shortcut icon" href="{% static 'auctions/images/favicon.png' %}" type="image/x-icon">
+    </head>
+    <body {% if header_bg %} class='header_bg' {% endif %}>
+        <div class="overlayer" id="overlayer">
+            <div class="loader">
+                <div class="loader-inner"></div>
+            </div>
+        </div>
+        <a href="#0" class="scrollToTop"><i class="fas fa-angle-up"></i></a>
+        <div class="overlay"></div>
+        <header>
+            <div class="header-bottom">
+                <div class="container">
+                    <div class="header-wrapper">
+                        <div class="logo">
+                            <a href="{% url 'index' %}">
+                                BIDX
+                            </a>
+                        </div>
+                        <ul class="menu ml-auto">
+                            <li>
+                                <a href="{% url 'index' %}">Home</a>
+                            </li>
+                            <li>
+                                <a href="product.html">Auction</a>
+                            </li>
+                            <li>
+                                <a href="contact.html">Contact</a>
+                            </li>
+                            <li>
+                                {% if user.is_authenticated %}
+                                    <a href="sign-in.html" class="user-button"><i class="flaticon-user"></i></a>
+                                {% else %}
+                                    <a href="{% url 'register' %}" class="user-button"><i class="flaticon-user"></i></a>
+                                {% endif %}
+                                
+                            </li>
+                        </ul>
+                        <form class="search-form">
+                            <input type="text" placeholder="Search by brand, model....">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                        <div class="search-bar d-md-none">
+                            <a href="#0"><i class="fas fa-search"></i></a>
+                        </div>
+                        <div class="header-bar d-lg-none">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    <!--============= How Section Ends Here =============-->
+        <!-- <h1>Auctions</h1>
+        <div>
+            {% if user.is_authenticated %}
+                Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+                Not signed in.
+            {% endif %}
+        </div>
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cat_list' %}">Categories</a>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'watchlistpage' user.username %}">Watch List</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'winnings' %}">Your Winnings</a>
+                </li>
+
+                
+
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+        <hr>-->
+        {% block body %}
+        {% endblock %}
+    <!--============= Footer Section Starts Here =============-->
+    <footer class="bg_img padding-top oh" data-background="{% static 'auctions' %}/images/footer/footer-bg.jpg">
+        <div class="footer-top-shape">
+            <img src="{% static 'auctions' %}/css/img/footer-top-shape.png" alt="css">
+        </div>
+        <div class="anime-wrapper">
+            <div class="anime-1 plus-anime">
+                <img src="{% static 'auctions' %}/images/footer/p1.png" alt="footer">
+            </div>
+            <div class="anime-2 plus-anime">
+                <img src="{% static 'auctions' %}/images/footer/p2.png" alt="footer">
+            </div>
+            <div class="anime-3 plus-anime">
+                <img src="{% static 'auctions' %}/images/footer/p3.png" alt="footer">
+            </div>
+            <div class="anime-5 zigzag">
+                <img src="{% static 'auctions' %}/images/footer/c2.png" alt="footer">
+            </div>
+            <div class="anime-6 zigzag">
+                <img src="{% static 'auctions' %}/images/footer/c3.png" alt="footer">
+            </div>
+            <div class="anime-7 zigzag">
+                <img src="{% static 'auctions' %}/images/footer/c4.png" alt="footer">
+            </div>
+        </div>
+        <div class="newslater-wrapper">
+            <div class="container">
+                <div class="newslater-area">
+                    <div class="newslater-thumb">
+                        <img src="{% static 'auctions' %}/images/footer/newslater.png" alt="footer">
+                    </div>
+                    <div class="newslater-content">
+                        <div class="section-header left-style mb-low">
+                            <h5 class="cate">Subscribe to BIDX</h5>
+                            <h3 class="title">To Get Exclusive Benefits</h3>
+                        </div>
+                        <form class="subscribe-form">
+                            <input type="text" placeholder="Enter Your Email" name="email">
+                            <button type="submit" class="custom-button">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="copyright-area">
+                    <div class="footer-bottom-wrapper">
+                        <div class="logo">
+                            <a href="index.html">BIDX</a>
+                        </div>
+                        <ul class="gateway-area">
+                            <li>
+                                <a href="#0"><img src="{% static 'auctions' %}/images/footer/paypal.png" alt="footer"></a>
+                            </li>
+                            <li>
+                                <a href="#0"><img src="{% static 'auctions' %}/images/footer/visa.png" alt="footer"></a>
+                            </li>
+                            <li>
+                                <a href="#0"><img src="{% static 'auctions' %}/images/footer/discover.png" alt="footer"></a>
+                            </li>
+                            <li>
+                                <a href="#0"><img src="{% static 'auctions' %}/images/footer/mastercard.png" alt="footer"></a>
+                            </li>
+                        </ul>
+                        <div class="copyright"><p>&copy; Copyright 2023 | <a href="#0">BidX</a> By <a href="#0">Enamul</a></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+        <script data-cfasync="false" src="{% static 'auctions/js/email-decode.min.js' %}"></script>
+        <script src="{% static 'auctions/js/jquery-3.3.1.min.js' %}"></script>
+        <script src="{% static 'auctions/js/modernizr-3.6.0.min.js' %}"></script>
+        <script src="{% static 'auctions/js/plugins.js' %}js/"></script>
+        <script src="{% static 'auctions/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'auctions/js/isotope.pkgd.min.js' %}"></script>
+        <script src="{% static 'auctions/js/wow.min.js' %}"></script>
+        <script src="{% static 'auctions/js/waypoints.js' %}"></script>
+        <script src="{% static 'auctions/js/nice-select.js' %}"></script>
+        <script src="{% static 'auctions/js/counterup.min.js' %}"></script>
+        <script src="{% static 'auctions/js/owl.min.js' %}"></script>
+        <script src="{% static 'auctions/js/magnific-popup.min.js' %}"></script>
+        <script src="{% static 'auctions/js/yscountdown.min.js' %}"></script>
+        <script src="{% static 'auctions/js/jquery-ui.min.js' %}"></script>
+        <script src="{% static 'auctions/js/main.js' %}"></script>
+    </body>
+</html>
