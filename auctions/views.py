@@ -66,6 +66,15 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+def auctionList(request):
+    return render(request, "auctions/list.html")
+
+def auctionDetails(request):
+    return render(request, "auctions/details.html")
+
+
+def contact(request):
+    return render(request, "auctions/contact.html")
 
 @login_required(login_url='login')
 def create(request):
@@ -93,7 +102,6 @@ def listingpage(request, bidid):
         "comments" : comments.objects.filter(listingid = bidid),
         "present_bid": minbid(biddesc.starting_bid, bids_present),
     })
-
 
 @login_required(login_url='login')
 def watchlistpage(request, username):
