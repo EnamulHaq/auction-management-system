@@ -10,10 +10,10 @@ urlpatterns = [
     path("create", views.create, name="create"),
     # path("auctions/<int:bidid>", views.listingpage, name="listingpage"),
     path("auctions", views.auctionList, name="auctionList"),
-    path("auction/details", views.auctionDetails, name="auctionDetails"),
-    path("watchlist/<str:username>", views.watchlistpage, name = "watchlistpage"),
-    path("added", views.addwatchlist, name = "addwatchlist"),
-    path("delete", views.deletewatchlist, name = "deletewatchlist"),
+    path("auction/<int:bidid>", views.auctionDetails, name="auctionDetails"),
+    path("watchlist/<str:username>", views.watchlistpage, name="watchlistpage"),
+    path("added", views.addwatchlist, name="addwatchlist"),
+    path("delete", views.deletewatchlist, name="deletewatchlist"),
     path("bidlist", views.bid, name="bid"),
     path("comments", views.allcomments, name="allcomments"),
     path("win_ner", views.win_ner, name="win_ner"),
@@ -22,4 +22,3 @@ urlpatterns = [
     path("contact", views.contact, name="contact"),
     path("categories/<str:category_name>", views.cat, name="cat"),
 ]
-
