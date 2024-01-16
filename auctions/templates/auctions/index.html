@@ -10,11 +10,12 @@
                         <h2 class="title mb-0">Top auctions list</h2>
                     </div>
                 </div>
-                <a href="/auctions" class="normal-button">View All</a>
+                <a href="{% url 'auctionList' %}" class="normal-button">View All</a>
             </div>
             <div class="row justify-content-center mb-30-none">
                 {% for top_three_p_list in top_three_products %}
                     <div class="col-sm-10 col-md-6 col-lg-4">
+
                         <div class="auction-item-2">
                             <div class="auction-thumb">
                                 <a href="{% url 'auctionDetails' top_three_p_list.id %}"><img
@@ -77,7 +78,7 @@
     </section>
     <!--============= Call In Section Ends Here =============-->
 
-
+    {% if watch_cat_products|length > 0 %}
     <!--============= Watches Auction Section Starts Here =============-->
     <section class="watches-auction-section padding-bottom padding-top">
         <div class="container">
@@ -94,16 +95,16 @@
                 <a href="/auctions" class="normal-button">View All</a>
             </div>
             <div class="row justify-content-center mb-30-none">
+                {% for watch_p_list in watch_cat_products %}
                 <div class="col-sm-10 col-md-6 col-lg-4">
                     <div class="auction-item-2">
                         <div class="auction-thumb">
-                            <a href="product-details.html"><img
-                                    src="{% static 'auctions' %}/images/auction/watches/auction-1.jpg"
-                                    alt="watches"></a>
+                            <a href="{% url 'auctionDetails' watch_p_list.id %}"><img
+                                        src="{{ watch_p_list.image_url }}" alt="{{ watch_p_list.title }}"></a>
                         </div>
                         <div class="auction-content">
                             <h6 class="title">
-                                <a href="product-details.html">Vintage Rolex</a>
+                                <a href="{% url 'auctionDetails' watch_p_list.id %}">{{ watch_p_list.title }}</a>
                             </h6>
                             <div class="bid-area">
                                 <div class="bid-amount">
@@ -112,7 +113,7 @@
                                     </div>
                                     <div class="amount-content">
                                         <div class="current">Current Bid</div>
-                                        <div class="amount">$300.00</div>
+                                        <div class="amount">${{ watch_p_list.starting_bid }}</div>
                                     </div>
                                 </div>
                                 <div class="bid-amount">
@@ -121,104 +122,29 @@
                                     </div>
                                     <div class="amount-content">
                                         <div class="current">Buy Now</div>
-                                        <div class="amount">$5,00.00</div>
+                                        <div class="amount">
+                                            <del>${{ watch_p_list.buy_now_price }}</del>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="countdown-area">
                                 <div class="countdown">
-                                    <div id="bid_counter20"></div>
+                                    <div class="countdown-timer" data-expire-date="{{ watch_p_list.expire_date }}"></div>
                                 </div>
-                                <span class="total-bids">30 Bids</span>
+                                <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-10 col-md-6 col-lg-4">
-                    <div class="auction-item-2">
-                        <div class="auction-thumb">
-                            <a href="product-details.html"><img
-                                    src="{% static 'auctions' %}/images/auction/watches/auction-2.jpg"
-                                    alt="watches"></a>
-                        </div>
-                        <div class="auction-content">
-                            <h6 class="title">
-                                <a href="product-details.html">Lady’s Vintage Rolex Datejust</a>
-                            </h6>
-                            <div class="bid-area">
-                                <div class="bid-amount">
-                                    <div class="icon">
-                                        <i class="flaticon-auction"></i>
-                                    </div>
-                                    <div class="amount-content">
-                                        <div class="current">Current Bid</div>
-                                        <div class="amount">$250.00</div>
-                                    </div>
-                                </div>
-                                <div class="bid-amount">
-                                    <div class="icon">
-                                        <i class="flaticon-money"></i>
-                                    </div>
-                                    <div class="amount-content">
-                                        <div class="current">Buy Now</div>
-                                        <div class="amount">$5,00.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="countdown-area">
-                                <div class="countdown">
-                                    <div id="bid_counter21"></div>
-                                </div>
-                                <span class="total-bids">30 Bids</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-10 col-md-6 col-lg-4">
-                    <div class="auction-item-2">
-                        <div class="auction-thumb">
-                            <a href="product-details.html"><img
-                                    src="{% static 'auctions' %}/images/auction/watches/auction-3.jpg"
-                                    alt="watches"></a>
-                        </div>
-                        <div class="auction-content">
-                            <h6 class="title">
-                                <a href="product-details.html">Lady’s Retro Diamond</a>
-                            </h6>
-                            <div class="bid-area">
-                                <div class="bid-amount">
-                                    <div class="icon">
-                                        <i class="flaticon-auction"></i>
-                                    </div>
-                                    <div class="amount-content">
-                                        <div class="current">Current Bid</div>
-                                        <div class="amount">$150.00</div>
-                                    </div>
-                                </div>
-                                <div class="bid-amount">
-                                    <div class="icon">
-                                        <i class="flaticon-money"></i>
-                                    </div>
-                                    <div class="amount-content">
-                                        <div class="current">Buy Now</div>
-                                        <div class="amount">$5,00.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="countdown-area">
-                                <div class="countdown">
-                                    <div id="bid_counter22"></div>
-                                </div>
-                                <span class="total-bids">30 Bids</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
     <!--============= Watches Auction Section Ends Here =============-->
+    {% endif %}
 
+    {% if real_state_cat_products|length > 0 %}
     <!--============= Real Estate Section Starts Here =============-->
     <section class="real-estate-auction padding-top padding-bottom pos-rel oh">
         <div class="car-bg"><img src="{% static 'auctions' %}/images/auction/realstate/real-bg.png" alt="realstate">
@@ -234,19 +160,19 @@
                         <p>Find auctions for Homes, Condos, Residential & Commercial Properties.</p>
                     </div>
                 </div>
-                <a href="#0" class="normal-button">View All</a>
+                <a href="{% url 'auctionList' %}" class="normal-button">View All</a>
             </div>
             <div class="auction-slider-4 owl-theme owl-carousel">
+                {% for real_state_p_list in real_state_cat_products %}
                 <div class="auction-item-4">
                     <div class="auction-thumb">
-                        <a href="product-details.html"><img
-                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"
-                                alt="realstate"></a>
-                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                        <a href="{% url 'auctionDetails' real_state_p_list.id %}"><img
+                                        src="{{ real_state_p_list.image_url }}" alt="{{ real_state_p_list.title }}"></a>
+                        <a href="{% url 'auctionDetails' real_state_p_list.id %}" class="bid"><i class="flaticon-auction"></i></a>
                     </div>
                     <div class="auction-content">
                         <h4 class="title">
-                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>
+                            <a href="{% url 'auctionDetails' real_state_p_list.id %}">{{ real_state_p_list.title }}</a>
                         </h4>
                         <div class="bid-area">
                             <div class="bid-amount">
@@ -255,7 +181,7 @@
                                 </div>
                                 <div class="amount-content">
                                     <div class="current">Current Bid</div>
-                                    <div class="amount">$876.00</div>
+                                    <div class="amount">${{ real_state_p_list.starting_bid }}</div>
                                 </div>
                             </div>
                             <div class="bid-amount">
@@ -264,189 +190,192 @@
                                 </div>
                                 <div class="amount-content">
                                     <div class="current">Buy Now</div>
-                                    <div class="amount">$9,00.00</div>
+                                    <div class="amount">
+                                        <del>${{ real_state_p_list.buy_now_price }}</del>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="countdown-area">
                             <div class="countdown">
-                                <div id="bid_counter30"></div>
+                                <div class="countdown-timer" data-expire-date="{{ real_state_p_list.expire_date }}"></div>
                             </div>
-                            <span class="total-bids">30 Bids</span>
+                            <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                         </div>
                         <div class="text-center">
-                            <a href="#0" class="custom-button">Submit a bid</a>
+                            <a href="{% url 'auctionDetails' real_state_p_list.id %}" class="custom-button">Submit a bid</a>
                         </div>
                     </div>
                 </div>
-                <div class="auction-item-4">
-                    <div class="auction-thumb">
-                        <a href="product-details.html"><img
-                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"
-                                alt="realstate"></a>
-                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                    </div>
-                    <div class="auction-content">
-                        <h4 class="title">
-                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>
-                        </h4>
-                        <div class="bid-area">
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-auction"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Current Bid</div>
-                                    <div class="amount">$876.00</div>
-                                </div>
-                            </div>
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-money"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Buy Now</div>
-                                    <div class="amount">$9,70.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="countdown-area">
-                            <div class="countdown">
-                                <div id="bid_counter31"></div>
-                            </div>
-                            <span class="total-bids">30 Bids</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="#0" class="custom-button">Submit a bid</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="auction-item-4">
-                    <div class="auction-thumb">
-                        <a href="product-details.html"><img
-                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"
-                                alt="realstate"></a>
-                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                    </div>
-                    <div class="auction-content">
-                        <h4 class="title">
-                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>
-                        </h4>
-                        <div class="bid-area">
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-auction"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Current Bid</div>
-                                    <div class="amount">$360.00</div>
-                                </div>
-                            </div>
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-money"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Buy Now</div>
-                                    <div class="amount">$5,00.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="countdown-area">
-                            <div class="countdown">
-                                <div id="bid_counter32"></div>
-                            </div>
-                            <span class="total-bids">30 Bids</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="#0" class="custom-button">Submit a bid</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="auction-item-4">
-                    <div class="auction-thumb">
-                        <a href="product-details.html"><img
-                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"
-                                alt="realstate"></a>
-                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                    </div>
-                    <div class="auction-content">
-                        <h4 class="title">
-                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>
-                        </h4>
-                        <div class="bid-area">
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-auction"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Current Bid</div>
-                                    <div class="amount">$256.00</div>
-                                </div>
-                            </div>
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-money"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Buy Now</div>
-                                    <div class="amount">$5,00.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="countdown-area">
-                            <div class="countdown">
-                                <div id="bid_counter33"></div>
-                            </div>
-                            <span class="total-bids">30 Bids</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="#0" class="custom-button">Submit a bid</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="auction-item-4">
-                    <div class="auction-thumb">
-                        <a href="product-details.html"><img
-                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"
-                                alt="realstate"></a>
-                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                    </div>
-                    <div class="auction-content">
-                        <h4 class="title">
-                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>
-                        </h4>
-                        <div class="bid-area">
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-auction"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Current Bid</div>
-                                    <div class="amount">$189.00</div>
-                                </div>
-                            </div>
-                            <div class="bid-amount">
-                                <div class="icon">
-                                    <i class="flaticon-money"></i>
-                                </div>
-                                <div class="amount-content">
-                                    <div class="current">Buy Now</div>
-                                    <div class="amount">$5,00.00</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="countdown-area">
-                            <div class="countdown">
-                                <div id="bid_counter34"></div>
-                            </div>
-                            <span class="total-bids">30 Bids</span>
-                        </div>
-                        <div class="text-center">
-                            <a href="#0" class="custom-button">Submit a bid</a>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
+{#                <div class="auction-item-4">#}
+{#                    <div class="auction-thumb">#}
+{#                        <a href="product-details.html"><img#}
+{#                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"#}
+{#                                alt="realstate"></a>#}
+{#                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>#}
+{#                    </div>#}
+{#                    <div class="auction-content">#}
+{#                        <h4 class="title">#}
+{#                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>#}
+{#                        </h4>#}
+{#                        <div class="bid-area">#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-auction"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Current Bid</div>#}
+{#                                    <div class="amount">$876.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-money"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Buy Now</div>#}
+{#                                    <div class="amount">$9,70.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="countdown-area">#}
+{#                            <div class="countdown">#}
+{#                                <div id="bid_counter31"></div>#}
+{#                            </div>#}
+{#                            <span class="total-bids">30 Bids</span>#}
+{#                        </div>#}
+{#                        <div class="text-center">#}
+{#                            <a href="#0" class="custom-button">Submit a bid</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="auction-item-4">#}
+{#                    <div class="auction-thumb">#}
+{#                        <a href="product-details.html"><img#}
+{#                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"#}
+{#                                alt="realstate"></a>#}
+{#                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>#}
+{#                    </div>#}
+{#                    <div class="auction-content">#}
+{#                        <h4 class="title">#}
+{#                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>#}
+{#                        </h4>#}
+{#                        <div class="bid-area">#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-auction"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Current Bid</div>#}
+{#                                    <div class="amount">$360.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-money"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Buy Now</div>#}
+{#                                    <div class="amount">$5,00.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="countdown-area">#}
+{#                            <div class="countdown">#}
+{#                                <div id="bid_counter32"></div>#}
+{#                            </div>#}
+{#                            <span class="total-bids">30 Bids</span>#}
+{#                        </div>#}
+{#                        <div class="text-center">#}
+{#                            <a href="#0" class="custom-button">Submit a bid</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="auction-item-4">#}
+{#                    <div class="auction-thumb">#}
+{#                        <a href="product-details.html"><img#}
+{#                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"#}
+{#                                alt="realstate"></a>#}
+{#                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>#}
+{#                    </div>#}
+{#                    <div class="auction-content">#}
+{#                        <h4 class="title">#}
+{#                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>#}
+{#                        </h4>#}
+{#                        <div class="bid-area">#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-auction"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Current Bid</div>#}
+{#                                    <div class="amount">$256.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-money"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Buy Now</div>#}
+{#                                    <div class="amount">$5,00.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="countdown-area">#}
+{#                            <div class="countdown">#}
+{#                                <div id="bid_counter33"></div>#}
+{#                            </div>#}
+{#                            <span class="total-bids">30 Bids</span>#}
+{#                        </div>#}
+{#                        <div class="text-center">#}
+{#                            <a href="#0" class="custom-button">Submit a bid</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="auction-item-4">#}
+{#                    <div class="auction-thumb">#}
+{#                        <a href="product-details.html"><img#}
+{#                                src="{% static 'auctions' %}/images/auction/realstate/auction-1.png"#}
+{#                                alt="realstate"></a>#}
+{#                        <a href="#0" class="bid"><i class="flaticon-auction"></i></a>#}
+{#                    </div>#}
+{#                    <div class="auction-content">#}
+{#                        <h4 class="title">#}
+{#                            <a href="product-details.html">Brand New Apartments In Esenyurt, Istanbul</a>#}
+{#                        </h4>#}
+{#                        <div class="bid-area">#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-auction"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Current Bid</div>#}
+{#                                    <div class="amount">$189.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="bid-amount">#}
+{#                                <div class="icon">#}
+{#                                    <i class="flaticon-money"></i>#}
+{#                                </div>#}
+{#                                <div class="amount-content">#}
+{#                                    <div class="current">Buy Now</div>#}
+{#                                    <div class="amount">$5,00.00</div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="countdown-area">#}
+{#                            <div class="countdown">#}
+{#                                <div id="bid_counter34"></div>#}
+{#                            </div>#}
+{#                            <span class="total-bids">30 Bids</span>#}
+{#                        </div>#}
+{#                        <div class="text-center">#}
+{#                            <a href="#0" class="custom-button">Submit a bid</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
             <div class="slider-nav real-style ml-auto">
                 <a href="#0" class="real-prev"><i class="flaticon-left-arrow"></i></a>
@@ -456,7 +385,7 @@
         </div>
     </section>
     <!--============= Real Estate Section Starts Here =============-->
-
+    {% endif %}
 
     <!--============= Art Auction Section Starts Here =============-->
     <section class="art-and-electronics-auction-section padding-top">
@@ -477,18 +406,16 @@
                     </div>
                     <div class="auction-slider-1 owl-carousel owl-theme  mb-30-none">
                         <div class="slide-item">
+                            {% for electronics_p_list in electronics_cat_products %}
                             <div class="auction-item-1">
                                 <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-1.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                                     <a href="{% url 'auctionDetails' electronics_p_list.id %}"><img
+                                        src="{{ electronics_p_list.image_url }}" alt="{{ electronics_p_list.title }}"></a>
+                                    <a href="{% url 'auctionDetails' electronics_p_list.id %}" class="bid"><i class="flaticon-auction"></i></a>
                                 </div>
                                 <div class="auction-content">
                                     <h6 class="title">
-                                        <a href="product-details.html">Magnifying Glasses, Jewelry Loupe odit qui
-                                            corporis</a>
+                                        <a href="{% url 'auctionDetails' electronics_p_list.id %}">{{ electronics_p_list.title }}</a>
                                     </h6>
                                     <div class="bid-amount">
                                         <div class="icon">
@@ -496,118 +423,30 @@
                                         </div>
                                         <div class="amount-content">
                                             <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
+                                            <div class="amount">${{ electronics_p_list.starting_bid }}</div>
                                         </div>
                                     </div>
                                     <div class="countdown-area">
                                         <div class="countdown">
-                                            <div id="bid_counter1"></div>
+                                            <div class="countdown-timer" data-expire-date="{{ electronics_p_list.expire_date }}"></div>
                                         </div>
-                                        <span class="total-bids">30 Bids</span>
+                                        <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-2.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">Surveillance WiFi Exterieur, 1080P Camera</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter2"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-3.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">WiFi Doorbell Camera for Apartments</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter3"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-4.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">GPD Pocket 2 Ultrabook 7" inch</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter4"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="slide-item">
+                            {% for watch_p_lists in watch_cat_products %}
                             <div class="auction-item-1">
                                 <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-1.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                                     <a href="{% url 'auctionDetails' watch_p_lists.id %}"><img
+                                        src="{{ watch_p_lists.image_url }}" alt="{{ watch_p_lists.title }}"></a>
+                                    <a href="{% url 'auctionDetails' watch_p_lists.id %}" class="bid"><i class="flaticon-auction"></i></a>
                                 </div>
                                 <div class="auction-content">
                                     <h6 class="title">
-                                        <a href="product-details.html">Magnifying Glasses, Jewelry Loupe odit qui
-                                            corporis</a>
+                                        <a href="{% url 'auctionDetails' watch_p_lists.id %}">{{ watch_p_lists.title }}</a>
                                     </h6>
                                     <div class="bid-amount">
                                         <div class="icon">
@@ -615,104 +454,18 @@
                                         </div>
                                         <div class="amount-content">
                                             <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
+                                            <div class="amount">${{ watch_p_lists.starting_bid }}</div>
                                         </div>
                                     </div>
                                     <div class="countdown-area">
                                         <div class="countdown">
-                                            <div id="bid_counter5"></div>
+                                            <div class="countdown-timer" data-expire-date="{{ watch_p_lists.expire_date }}"></div>
                                         </div>
-                                        <span class="total-bids">30 Bids</span>
+                                        <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-2.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">Surveillance WiFi Exterieur, 1080P Camera</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter6"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-3.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">WiFi Doorbell Camera for Apartments</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter7"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/electronics/auction-4.jpg"
-                                            alt="electronics"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">GPD Pocket 2 Ultrabook 7" inch</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter8"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -731,18 +484,16 @@
                     </div>
                     <div class="auction-slider-2 owl-carousel owl-theme mb-30-none">
                         <div class="slide-item">
+                            {% for art_p_list in art_cat_products %}
                             <div class="auction-item-1">
                                 <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-1.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                                     <a href="{% url 'auctionDetails' art_p_list.id %}"><img
+                                        src="{{ art_p_list.image_url }}" alt="{{ art_p_list.title }}"></a>
+                                    <a href="{% url 'auctionDetails' art_p_list.id %}" class="bid"><i class="flaticon-auction"></i></a>
                                 </div>
                                 <div class="auction-content">
                                     <h6 class="title">
-                                        <a href="product-details.html">Magnifying Glasses, Jewelry Loupe odit qui
-                                            corporis</a>
+                                        <a href="{% url 'auctionDetails' art_p_list.id %}">{{ art_p_list.title }}</a>
                                     </h6>
                                     <div class="bid-amount">
                                         <div class="icon">
@@ -750,118 +501,30 @@
                                         </div>
                                         <div class="amount-content">
                                             <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
+                                            <div class="amount">${{ art_p_list.starting_bid }}</div>
                                         </div>
                                     </div>
                                     <div class="countdown-area">
                                         <div class="countdown">
-                                            <div id="bid_counter9"></div>
+                                            <div class="countdown-timer" data-expire-date="{{ art_p_list.expire_date }}"></div>
                                         </div>
-                                        <span class="total-bids">30 Bids</span>
+                                        <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-2.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">Surveillance WiFi Exterieur, 1080P Camera</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter10"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-3.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">WiFi Doorbell Camera for Apartments</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter11"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-4.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">GPD Pocket 2 Ultrabook 7" inch</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter12"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="slide-item">
+                            {% for art_p_list in art_cat_products %}
                             <div class="auction-item-1">
                                 <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-1.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
+                                     <a href="{% url 'auctionDetails' art_p_list.id %}"><img
+                                        src="{{ art_p_list.image_url }}" alt="{{ art_p_list.title }}"></a>
+                                    <a href="{% url 'auctionDetails' art_p_list.id %}" class="bid"><i class="flaticon-auction"></i></a>
                                 </div>
                                 <div class="auction-content">
                                     <h6 class="title">
-                                        <a href="product-details.html">Magnifying Glasses, Jewelry Loupe odit qui
-                                            corporis</a>
+                                        <a href="{% url 'auctionDetails' art_p_list.id %}">{{ art_p_list.title }}</a>
                                     </h6>
                                     <div class="bid-amount">
                                         <div class="icon">
@@ -869,104 +532,18 @@
                                         </div>
                                         <div class="amount-content">
                                             <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
+                                            <div class="amount">${{ art_p_list.starting_bid }}</div>
                                         </div>
                                     </div>
                                     <div class="countdown-area">
                                         <div class="countdown">
-                                            <div id="bid_counter13"></div>
+                                            <div class="countdown-timer" data-expire-date="{{ art_p_list.expire_date }}"></div>
                                         </div>
-                                        <span class="total-bids">30 Bids</span>
+                                        <span class="total-bids">{{ present_bid|default:"0" }} Bids</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-2.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">Surveillance WiFi Exterieur, 1080P Camera</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter14"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-3.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">WiFi Doorbell Camera for Apartments</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter15"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="auction-item-1">
-                                <div class="auction-thumb">
-                                    <a href="product-details.html"><img
-                                            src="{% static 'auctions' %}/images/auction/art/auction-4.jpg"
-                                            alt="art"></a>
-                                    <a href="#0" class="rating"><i class="far fa-star"></i></a>
-                                    <a href="#0" class="bid"><i class="flaticon-auction"></i></a>
-                                </div>
-                                <div class="auction-content">
-                                    <h6 class="title">
-                                        <a href="product-details.html">GPD Pocket 2 Ultrabook 7" inch</a>
-                                    </h6>
-                                    <div class="bid-amount">
-                                        <div class="icon">
-                                            <i class="flaticon-auction"></i>
-                                        </div>
-                                        <div class="amount-content">
-                                            <div class="current">Current Bid</div>
-                                            <div class="amount">$876.00</div>
-                                        </div>
-                                    </div>
-                                    <div class="countdown-area">
-                                        <div class="countdown">
-                                            <div id="bid_counter16"></div>
-                                        </div>
-                                        <span class="total-bids">30 Bids</span>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

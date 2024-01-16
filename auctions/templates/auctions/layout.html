@@ -54,7 +54,7 @@
                             </li>
                             <li>
                                 {% if user.is_authenticated %}
-                                    <a href="{% url 'login' %}" class="user-button"><i class="flaticon-user"></i></a>
+                                    <a href="{% url 'userDashboard' %}" class="user-button"><i class="flaticon-user"></i></a>
                                 {% else %}
                                     <a href="{% url 'register' %}" class="user-button"><i class="flaticon-user"></i></a>
                                 {% endif %}

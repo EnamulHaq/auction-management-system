@@ -3,117 +3,46 @@
 {% load static %}
 {% block body %}
 <!--============= Product Details Section Starts Here =============-->
+
 <section class="product-details padding-bottom mt-240 mt-lg-440" style="padding-top: 150px;">
     <div class="container">
         <div class="product-details-slider-top-wrapper">
-            <div class="product-details-slider owl-theme owl-carousel" id="sync1">
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product1.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product2.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product3.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product4.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product5.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-top-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/product6.png" alt="product">
-                    </div>
-                </div>
+            <div class="product-details-slider">
+                <img src="{{ list.image_url }}" alt="{{ list.title }}">
             </div>
         </div>
-        <div class="product-details-slider-wrapper">
-            <div class="product-bottom-slider owl-theme owl-carousel" id="sync2">
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/01.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/02.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/03.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/04.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/05.png" alt="product">
-                    </div>
-                </div>
-                <div class="slide-bottom-item">
-                    <div class="slide-inner">
-                        <img src="{% static 'auctions' %}/images/product/06.png" alt="product">
-                    </div>
-                </div>
-            </div>
-            <span class="det-prev det-nav">
-                <i class="fas fa-angle-left"></i>
-            </span>
-            <span class="det-next det-nav active">
-                <i class="fas fa-angle-right"></i>
-            </span>
-        </div>
+
         <div class="row mt-40-60-80">
             <div class="col-lg-8">
                 <div class="product-details-content">
                     <div class="product-details-header">
-                        <h2 class="title">The Breeze Zodiac IX</h2>
+                        <h2 class="title">{{ list.title }}</h2>
                         <ul>
-                            <li>Listing ID: 14076242</li>
-                            <li>Item #: 7300-3356862</li>
+                            <li>Listing ID: {{ list.id }}</li>
                         </ul>
                     </div>
                     <ul class="price-table mb-30">
                         <li class="header">
                             <h5 class="current">Current Price</h5>
-                            <h3 class="price">US $700.00</h3>
-                        </li>
-                        <li>
-                            <span class="details">Buyer's Premium</span>
-                            <h5 class="info">10.00%</h5>
-                        </li>
-                        <li>
-                            <span class="details">Bid Increment (US)</span>
-                            <h5 class="info">$50.00</h5>
+                            <h3 class="price">US ${{ list.starting_bid|floatformat:2 }}</h3>
                         </li>
                     </ul>
                     <div class="product-bid-area">
-                        <form class="product-bid-form">
-                            <div class="search-icon">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div style="padding: 30px; font-size: 18px; color: red;" class="message">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                         <form class="product-bid-form" method="get" action = "{% url 'bid' %}">
+                             <div class="search-icon">
                                 <img src="{% static 'auctions' %}/images/product/search-icon.png" alt="product">
                             </div>
-                            <input type="text" placeholder="Enter you bid amount">
-                            <button type="submit" class="custom-button">Submit a bid</button>
+                            <input required name= "bid_amnt" placeholder = "Enter you bid amount" type = "number">
+                             <button type="submit" name = "list_d" class="custom-button" value = {{ list.id }}>Submit a bid</button>
                         </form>
                     </div>
                     <div class="buy-now-area">
-                        <a href="#0" class="custom-button">Buy Now: $4,200</a>
+                        <a href="#0" class="custom-button">Buy Now: ${{ list.buy_now_price|floatformat:2 }}</a>
                         <div class="share-area">
                             <span>Share to:</span>
                             <ul>
@@ -139,7 +68,7 @@
                     <div class="product-single-sidebar mb-3">
                         <h6 class="title">This Auction Ends in:</h6>
                         <div class="countdown">
-                            <div id="bid_counter1"></div>
+                            <div class="countdown-timer" data-expire-date="{{ list.expire_date }}"></div>
                         </div>
                         <div class="side-counter-area">
                             <div class="side-counter-item">
@@ -147,17 +76,8 @@
                                     <img src="{% static 'auctions' %}/images/product/icon1.png" alt="product">
                                 </div>
                                 <div class="content">
-                                    <h3 class="count-title"><span class="counter">61</span></h3>
+                                    <h3 class="count-title"><span class="counter">{{ total_bidders }}</span></h3>
                                     <p>Active Bidders</p>
-                                </div>
-                            </div>
-                            <div class="side-counter-item">
-                                <div class="thumb">
-                                    <img src="{% static 'auctions' %}/images/product/icon2.png" alt="product">
-                                </div>
-                                <div class="content">
-                                    <h3 class="count-title"><span class="counter">203</span></h3>
-                                    <p>Watching</p>
                                 </div>
                             </div>
                             <div class="side-counter-item">
@@ -165,7 +85,7 @@
                                     <img src="{% static 'auctions' %}/images/product/icon3.png" alt="product">
                                 </div>
                                 <div class="content">
-                                    <h3 class="count-title"><span class="counter">82</span></h3>
+                                    <h3 class="count-title"><span class="counter">{{ total_bids }}</span></h3>
                                     <p>Total Bids</p>
                                 </div>
                             </div>
@@ -175,44 +95,6 @@
             </div>
         </div>
     </div>
-    <!-- <div class="product-tab-menu-area mb-40-60 mt-70-100">
-        <div class="container">
-            <ul class="product-tab-menu nav nav-tabs">
-                <li>
-                    <a href="#details" class="active" data-toggle="tab">
-                        <div class="thumb">
-                            <img src="{% static 'auctions' %}/images/product/tab1.png" alt="product">
-                        </div>
-                        <div class="content">Description</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#delevery" data-toggle="tab">
-                        <div class="thumb">
-                            <img src="{% static 'auctions' %}/images/product/tab2.png" alt="product">
-                        </div>
-                        <div class="content">Delivery Options</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#history" data-toggle="tab">
-                        <div class="thumb">
-                            <img src="{% static 'auctions' %}/images/product/tab3.png" alt="product">
-                        </div>
-                        <div class="content">Bid History (36)</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#questions" data-toggle="tab">
-                        <div class="thumb">
-                            <img src="{% static 'auctions' %}/images/product/tab4.png" alt="product">
-                        </div>
-                        <div class="content">Questions </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div> -->
     <div class="container" style="margin-top: 100px;">
         <div class="tab-content">
             <div class="tab-pane fade show active" id="details">

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -21,4 +21,9 @@ urlpatterns = [
     path("cat_list", views.cat_list, name="cat_list"),
     path("contact", views.contact, name="contact"),
     path("categories/<str:category_name>", views.cat, name="cat"),
+    path("dashboard", views.dashboard, name="userDashboard"),
+    path('tinymce/', include('tinymce.urls')),
+    path("user/bid", views.userBid, name="userBids"),
+    path("user/profile", views.userProfile, name="userProfile"),
+    path("user/win/bids", views.userWinBids, name="userWinBids"),
 ]

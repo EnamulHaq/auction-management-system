@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -9,19 +10,27 @@ from django.contrib import messages
 
 
 def index(request):
-    auctions = auctionlist.objects.filter(active_bool=True),
+    auctions = auctionlist.objects.filter(active_bool=True)
     top_three_products = auctionlist.objects.filter(active_bool=True).order_by('-buy_now_price')[:3]
+    watch_cat_products = auctionlist.objects.filter(active_bool=True, categories__slug='watch')[:3]
+    real_state_cat_products = auctionlist.objects.filter(active_bool=True, categories__slug='real-estate')[:3]
+    electronics_cat_products = auctionlist.objects.filter(active_bool=True, categories__slug='electronics')[:4]
+    art_cat_products = auctionlist.objects.filter(active_bool=True, categories__slug='art')[:4]
+
     context = {
         'header_bg': True,
         'a_lists': auctions,
-        'top_three_products': top_three_products
+        'top_three_products': top_three_products,
+        'watch_cat_products': watch_cat_products,
+        'real_state_cat_products': real_state_cat_products,
+        'electronics_cat_products': electronics_cat_products,
+        'art_cat_products': art_cat_products
     }
     return render(request, "auctions/index.html", context)
 
 
 def login_view(request):
     if request.method == "POST":
-
         # Attempt to sign user in
         username = request.POST["username"]
         password = request.POST["password"]
@@ -30,7 +39,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("dashboard"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
@@ -78,16 +87,25 @@ def auctionList(request):
 def auctionDetails(request, bidid):
     biddesc = auctionlist.objects.get(pk=bidid, active_bool=True)
     bids_present = bids.objects.filter(listingid=bidid)
+    total_bids = bids.objects.filter(listingid=bidid)
+    total_bidders = bids.objects.filter(listingid=bidid).values('user').annotate(total_bids=Count('user'))
 
     return render(request, "auctions/details.html", {
         "list": biddesc,
         "comments": comments.objects.filter(listingid=bidid),
         "present_bid": minbid(biddesc.starting_bid, bids_present),
+        "total_bids": len(total_bids),
+        "total_bidders": len(total_bidders),
     })
 
 
 def contact(request):
     return render(request, "auctions/contact.html")
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    return render(request, "auctions/dashboard.html")
 
 
 @login_required(login_url='login')
@@ -97,6 +115,7 @@ def create(request):
         m.user = request.user.username
         m.title = request.POST["create_title"]
         m.desc = request.POST["create_desc"]
+        m.short_desc = request.POST["create_short_desc"]
         m.starting_bid = request.POST["create_initial_bid"]
         m.image_url = request.POST["img_url"]
         m.category = request.POST["category"]
@@ -109,8 +128,11 @@ def create(request):
 def listingpage(request, bidid):
     biddesc = auctionlist.objects.get(pk=bidid, active_bool=True)
     bids_present = bids.objects.filter(listingid=bidid)
+    total_bids = bids.objects.filter(listingid=bidid)
+    total_bidders = bids.objects.filter(listingid=bidid).values('user').annotate(
+        total_bids=Count('user'))
 
-    return render(request, "auctions/listingpage.html", {
+    return render(request, "auctions/details.html", {
         "list": biddesc,
         "comments": comments.objects.filter(listingid=bidid),
         "present_bid": minbid(biddesc.starting_bid, bids_present),
@@ -187,7 +209,7 @@ def bid(request):
         return redirect("index")
 
     messages.warning(request, f"Sorry, {bid_amnt} is less. It should be more than {min_req_bid}$.")
-    return listingpage(request, list_id)
+    return auctionDetails(request, list_id)
 
 
 # shows comments made by different user and allows to add comments
@@ -261,3 +283,30 @@ def cat_list(request):
     return render(request, "auctions/category.html", {
         "cat_list": category_present,
     })
+
+
+@login_required(login_url='login')
+def userBid(request):
+    userBids = bids.objects.filter(user=request.user.username)
+    user_auctions = auctionlist.objects.filter(id__in=[bid.listingid for bid in userBids])
+
+    for single_auction in user_auctions:
+        bids_present = bids.objects.filter(listingid=single_auction.id)
+        setattr(single_auction, 'bids_present', bids_present)
+
+    # for single_auction in user_auctions:
+    #     print(single_auction.bids_present)
+
+    return render(request, "auctions/my-bid.html", {
+        "userBids": user_auctions
+    })
+
+
+@login_required(login_url='login')
+def userProfile(request):
+    user_id = request.user
+
+
+@login_required(login_url='login')
+def userWinBids(request):
+    user_id = request.user.id
