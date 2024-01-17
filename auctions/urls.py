@@ -22,8 +22,8 @@ urlpatterns = [
     path("contact", views.contact, name="contact"),
     path("categories/<str:category_name>", views.cat, name="cat"),
     path("dashboard", views.dashboard, name="userDashboard"),
-    path('tinymce/', include('tinymce.urls')),
     path("user/bid", views.userBid, name="userBids"),
     path("user/profile", views.userProfile, name="userProfile"),
     path("user/win/bids", views.userWinBids, name="userWinBids"),
+    path('tinymce/', include('tinymce.urls'))
 ]

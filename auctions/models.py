@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from tinymce.models import HTMLField
+from tinymce import models as tinymce_models
 
 
 class User(AbstractUser):
@@ -12,8 +12,8 @@ class User(AbstractUser):
 class auctionlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=64)
-    short_desc = models.TextField(null=True)
-    desc = HTMLField()
+    short_desc = models.TextField(default=None, blank=True, null=True)
+    desc = tinymce_models.HTMLField()
     starting_bid = models.IntegerField()
     buy_now_price = models.IntegerField(default=0)
     bid_watch_list = models.IntegerField(default=0)

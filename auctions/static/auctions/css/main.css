@@ -3484,6 +3484,8 @@ div[class*="auction"] .custom-button {
 
 .auction-item-2 .auction-thumb img {
     width: 100%;
+    min-height: 212px;
+    height: 212px;
 }
 
 .auction-item-2 .auction-content .title {

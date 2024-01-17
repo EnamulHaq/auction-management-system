@@ -550,7 +550,7 @@
 
                 let endDate = parsedDate.format("YYYY-MM-DDTHH:mm:ss");
 
-                 endDate = new Date(endDate);
+                endDate = new Date(endDate);
 
                 if (endDate > now) {
                     let myCountDown = new ysCountDown(endDate, function (remaining, finished) {
@@ -576,6 +576,17 @@
                     counterElement.textContent = "Expired";
                 }
             });
+        }
+
+        if(document.querySelectorAll(".dashboard-expire-date").length) {
+            let counters = document.querySelectorAll(".dashboard-expire-date");
+
+            counters.forEach(function (counterElement) {
+                let endDateString = counterElement.dataset.dashboardExpire;
+                let parsedDate = moment(endDateString, "MMM. DD, YYYY, h:mmA");
+
+                counterElement.textContent = parsedDate.format("M/D/YYYY")
+            })
         }
         //New Countdown Starts
         if ($("#bid_counter23").length) {
@@ -1302,6 +1313,25 @@
         $('.det-prev').on('click', function () {
             sync1.trigger('prev.owl.carousel', [300]);
             sync2.trigger('prev.owl.carousel', [300]);
-        })
+        });
+
+        if ($('#filterCat').length > 0) {
+            $('#filterCat').change(function () {
+                let selectedCategory = document.getElementById("filterCat").value;
+                let currentUrl = window.location.href;
+                window.location.href = updateQueryStringParameter(currentUrl, 'filter-by', selectedCategory);
+            })
+        }
+
+        function updateQueryStringParameter(uri, key, value) {
+            let re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+            let separator = uri.indexOf('?') !== -1 ? "&" : "?";
+            if (uri.match(re)) {
+                return uri.replace(re, '$1' + key + "=" + value + '$2');
+            } else {
+                return uri + separator + key + "=" + value;
+            }
+        }
+
     });
 })(jQuery);

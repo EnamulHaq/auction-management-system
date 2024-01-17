@@ -1,12 +1,15 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.db.models import Count
+from django.db.models import Count, Max, Min
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.core.mail import send_mail
 
 
 def index(request):
@@ -81,7 +84,31 @@ def register(request):
 
 
 def auctionList(request):
-    return render(request, "auctions/list.html")
+    # Get the search query from the URL parameter
+    search_query = request.GET.get('q', '')
+    selected_category = request.GET.get('filter-by', 'all')
+
+    # Filter auctions based on the search query
+    auctions = auctionlist.objects.filter(active_bool=True)
+    if search_query:
+        auctions = auctions.filter(Q(title__icontains=search_query))
+
+    if selected_category != 'all':
+        auctions = auctions.filter(categories__title=selected_category)
+
+    paginator = Paginator(auctions, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    total_auctions = paginator.count
+
+    # Category
+    categories = Category.objects.all()
+    return render(request, "auctions/list.html", {
+        'auctions': page_obj,
+        'categories': categories,
+        'selected_category': selected_category,
+        'total_auctions': total_auctions
+    })
 
 
 def auctionDetails(request, bidid):
@@ -105,7 +132,25 @@ def contact(request):
 
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request, "auctions/dashboard.html")
+    # print(request.user.username)
+    userBids = bids.objects.filter(user=request.user.username)
+    user_auctions = auctionlist.objects.filter(id__in=[bid.listingid for bid in userBids])
+    your_win = winner.objects.filter(user=request.user.username)
+
+    # Get highest and lowest bid prices for each auction
+    for auction in user_auctions:
+        highest_bid = bids.objects.filter(listingid=auction.id).aggregate(Max('bid'))
+        lowest_bid = bids.objects.filter(listingid=auction.id).aggregate(Min('bid'))
+
+        auction.highest_bid_price = highest_bid if highest_bid is not None else 0
+        auction.lowest_bid_price = lowest_bid if lowest_bid is not None else 0
+
+    return render(request, "auctions/dashboard.html", {
+        'username': request.user.username,
+        'auctions': user_auctions,
+        'your_win': len(your_win),
+        'active_bids': len(userBids)
+    })
 
 
 @login_required(login_url='login')
@@ -206,7 +251,7 @@ def bid(request):
         mybid = bids(user=request.user.username, listingid=list_id, bid=bid_amnt)
         mybid.save()
         messages.success(request, "Bid Placed")
-        return redirect("index")
+        return redirect("auctionDetails", list_id)
 
     messages.warning(request, f"Sorry, {bid_amnt} is less. It should be more than {min_req_bid}$.")
     return auctionDetails(request, list_id)
@@ -290,12 +335,9 @@ def userBid(request):
     userBids = bids.objects.filter(user=request.user.username)
     user_auctions = auctionlist.objects.filter(id__in=[bid.listingid for bid in userBids])
 
-    for single_auction in user_auctions:
-        bids_present = bids.objects.filter(listingid=single_auction.id)
-        setattr(single_auction, 'bids_present', bids_present)
-
-    # for single_auction in user_auctions:
-    #     print(single_auction.bids_present)
+    total_bids = 0
+    for auction in user_auctions:
+        auction.total_bids = bids.objects.filter(listingid=auction.id).count()
 
     return render(request, "auctions/my-bid.html", {
         "userBids": user_auctions
@@ -309,4 +351,14 @@ def userProfile(request):
 
 @login_required(login_url='login')
 def userWinBids(request):
-    user_id = request.user.id
+    # print(request.user.username)
+    win_lists = winner.objects.filter(user=request.user.username)
+
+    # Get highest and lowest bid prices for each auction
+    for w_list in win_lists:
+        win_lists.aution = auctionlist.objects.filter(id=w_list.bid_win_list)
+
+    return render(request, "auctions/winning-bids.html", {
+        'username': request.user.username,
+        'auction': win_lists
+    })
