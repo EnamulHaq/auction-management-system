@@ -63,12 +63,13 @@
                     </div>
                 </div>
             </div>
+            
             <div class="col-lg-4">
                 <div class="product-sidebar-area">
                     <div class="product-single-sidebar mb-3">
                         <h6 class="title">This Auction Ends in:</h6>
                         <div class="countdown">
-                            <div class="countdown-timer" data-expire-date="{{ list.expire_date }}"></div>
+                            <div class="countdown-timer" data-expire-date="{{ list.expire_date }} "></div>
                         </div>
                         <div class="side-counter-area">
                             <div class="side-counter-item">
@@ -91,6 +92,13 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="closebid">
+                    {% if is_owner %}
+                        <form method= "get" action = "{% url 'win_ner' %}">
+                            <button class="btn btn-outline-primary" type = "submit" value = {{ list.id }} name="listid" >Close Bid</button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -42,7 +42,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("dashboard"))
+            return HttpResponseRedirect(reverse("userDashboard"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
@@ -117,12 +117,15 @@ def auctionDetails(request, bidid):
     total_bids = bids.objects.filter(listingid=bidid)
     total_bidders = bids.objects.filter(listingid=bidid).values('user').annotate(total_bids=Count('user'))
 
+    print(biddesc.user == request.user)
+
     return render(request, "auctions/details.html", {
         "list": biddesc,
         "comments": comments.objects.filter(listingid=bidid),
         "present_bid": minbid(biddesc.starting_bid, bids_present),
         "total_bids": len(total_bids),
         "total_bidders": len(total_bidders),
+        "is_owner": biddesc.user == request.user
     })
 
 
