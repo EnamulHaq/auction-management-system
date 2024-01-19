@@ -25,5 +25,6 @@ urlpatterns = [
     path("user/bid", views.userBid, name="userBids"),
     path("user/profile", views.userProfile, name="userProfile"),
     path("user/win/bids", views.userWinBids, name="userWinBids"),
-    path('tinymce/', include('tinymce.urls'))
+    path('user/auction', views.myauction, name="myAuction"),
+    path('tinymce/', include('tinymce.urls')),
 ]

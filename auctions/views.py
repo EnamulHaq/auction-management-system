@@ -117,8 +117,6 @@ def auctionDetails(request, bidid):
     total_bids = bids.objects.filter(listingid=bidid)
     total_bidders = bids.objects.filter(listingid=bidid).values('user').annotate(total_bids=Count('user'))
 
-    print(biddesc.user == request.user)
-
     return render(request, "auctions/details.html", {
         "list": biddesc,
         "comments": comments.objects.filter(listingid=bidid),
@@ -132,6 +130,20 @@ def auctionDetails(request, bidid):
 def contact(request):
     return render(request, "auctions/contact.html")
 
+
+def myauction(request):
+    # Retrieve auctions where request.user is the foreign key user
+    auctions = auctionlist.objects.filter(user=request.user, active_bool=True)
+
+    # Pagination
+    paginator = Paginator(auctions, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    total_auctions = paginator.count
+    return render(request, "auctions/myauction.html", {
+        'auctions': page_obj,
+        'total_auctions': total_auctions
+    })
 
 @login_required(login_url='login')
 def dashboard(request):
